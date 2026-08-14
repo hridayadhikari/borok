@@ -118,7 +118,7 @@ export default function GrammarExplorer({ onSpeak }) {
             Honorific Terms for Courtesy (Lesson XIV)
           </h3>
           <p style={{ fontSize: '0.9rem', color: '#554433', marginBottom: '1.25rem' }}>
-            Attach **'-ja / -jadi'** or use **'Nohrok'** when speaking politely to elders, guests, or in-laws.
+            Attach <strong>'-ja / -jadi'</strong> or use <strong>'Nohrok'</strong> when speaking politely to elders, guests, or in-laws.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
@@ -193,7 +193,7 @@ export default function GrammarExplorer({ onSpeak }) {
           </h3>
           <div style={{ padding: '1rem', backgroundColor: '#FFF4E5', borderRadius: '12px', marginBottom: '1.25rem', border: '1px solid #F5D0A9' }}>
             <p style={{ margin: 0, fontWeight: '600', color: '#7A4A15' }}>
-              💡 Rule: Adjectives are placed AFTER the Noun in Kokborok.
+              Rule: Adjectives are placed AFTER the Noun in Kokborok.
               (e.g., "Aphurai kolok" = Aphurai [man] + kolok [tall] → "Tall man").
             </p>
           </div>

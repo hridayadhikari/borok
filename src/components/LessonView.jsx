@@ -68,8 +68,8 @@ export default function LessonView({
             border: '1px solid #EED8B0',
             borderLeft: '4px solid var(--accent-ochre)'
           }}>
-            <div className="eyebrow" style={{ fontSize: '0.7rem', color: 'var(--accent-ochre)', marginBottom: '0.2rem' }}>
-              💡 Key Grammar Rule
+            <div className="eyebrow" style={{ color: 'var(--accent-maroon)', marginBottom: '0.4rem' }}>
+              Key Grammar Rule
             </div>
             <p style={{ margin: 0, fontWeight: '600', color: '#6A4518', fontSize: '0.95rem' }}>
               {lesson.grammarRule}

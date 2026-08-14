@@ -26,7 +26,7 @@ export default function CountingClassifierTool({ onSpeak }) {
           Kokborok Numbers & Classifier System
         </h2>
         <p style={{ color: '#5C4A3C', fontSize: '0.95rem', maxWidth: '800px' }}>
-          Counting in Kokborok requires attaching specific classifier suffixes to nouns based on shape, material, or category (e.g., **khoroksa** for human, **barsa** for flowers, **toksa** for long objects).
+          Counting in Kokborok requires attaching specific classifier suffixes to nouns based on shape, material, or category (e.g., <strong>khoroksa</strong> for human, <strong>barsa</strong> for flowers, <strong>toksa</strong> for long objects).
         </p>
 
         {/* Tab Toggle Buttons */}

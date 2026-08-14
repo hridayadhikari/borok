@@ -17,7 +17,7 @@ export default function AlphabetGuide({ onSpeak }) {
           Spelling & Pronunciation Method in Roman & Bengali Script
         </h2>
         <p style={{ color: '#5C4A3C', fontSize: '0.95rem', maxWidth: '800px' }}>
-          Kokborok is written in both **Roman script** (widely used in modern education) and **Bengali script** (historically and in official publications). This guide details the 6 distinct vowels, conjoint letter combinations, and high-tone accents.
+          Kokborok is written in both <strong>Roman script</strong> (widely used in modern education) and <strong>Bengali script</strong> (historically and in official publications). This guide details the 6 distinct vowels, conjoint letter combinations, and high-tone accents.
         </p>
 
         {/* Script Selector */}
@@ -62,7 +62,7 @@ export default function AlphabetGuide({ onSpeak }) {
               1. Pronunciation of Vowels
             </h3>
             <p style={{ fontSize: '0.9rem', color: '#554433', marginBottom: '1rem' }}>
-              Note: The letter **'W'** in Kokborok is a unique high unrounded vowel sound (like 'U' in Wake, or ৱ/উ).
+              Note: The letter <strong>'W'</strong> in Kokborok is a unique high unrounded vowel sound (like 'U' in Wake, or ৱ/উ).
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
@@ -160,7 +160,7 @@ export default function AlphabetGuide({ onSpeak }) {
             </h3>
             <div style={{ padding: '1rem', backgroundColor: '#FFF4E5', borderRadius: '12px', border: '1px solid #F5D0A9', marginBottom: '1.25rem' }}>
               <p style={{ fontSize: '0.95rem', color: '#7A4A15', fontWeight: '600', margin: 0 }}>
-                💡 Key Rule: When a word ending in **'K'** or **'P'** receives a vowel suffix (such as '-o'), the final consonant softens: **K → G** and **P → B**.
+                Key Rule: When a word ending in <strong>'K'</strong> or <strong>'P'</strong> receives a vowel suffix (such as '-o'), the final consonant softens: <strong>K → G</strong> and <strong>P → B</strong>.
               </p>
             </div>
 
@@ -195,7 +195,7 @@ export default function AlphabetGuide({ onSpeak }) {
               4. Pitch Accent: Normal Tone vs High Tone (h)
             </h3>
             <p style={{ fontSize: '0.9rem', color: '#554433', marginBottom: '1.25rem' }}>
-              Kokborok is a tonal language. Inserting an **'h'** inside or at the end of a vowel indicates a **High Tone** (slightly higher pitch with breathy release), completely changing the word's meaning.
+              Kokborok is a tonal language. Inserting an <strong>'h'</strong> inside or at the end of a vowel indicates a <strong>High Tone</strong> (slightly higher pitch with breathy release), completely changing the word's meaning.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>

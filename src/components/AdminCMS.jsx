@@ -156,9 +156,6 @@ export default function AdminCMS({ lang, customDictData, onSaveDictData, auditTr
                 />
                 <Key size={16} color="var(--accent-maroon)" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
               </div>
-              <span style={{ fontSize: '0.75rem', color: '#887766', marginTop: '0.35rem', display: 'block' }}>
-                (Default Key: <code>admin123</code> or <code>admin</code>)
-              </span>
             </div>
 
             {authError && (

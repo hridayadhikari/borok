@@ -54,7 +54,7 @@ export default function SpacedRepetitionView({ srsData, onRecordScore, onSpeak, 
           <span className="eyebrow">{t.spacedRepetitionTitle}</span>
         </div>
         <p style={{ fontSize: '0.9rem', color: '#554433', marginTop: '0.3rem', margin: 0 }}>
-          {t.spacedRepetitionDesc} (Queue: **{reviewQueue.length} words**)
+          {t.spacedRepetitionDesc} (Queue: <strong>{reviewQueue.length} words</strong>)
         </p>
       </div>
 
@@ -106,7 +106,7 @@ export default function SpacedRepetitionView({ srsData, onRecordScore, onSpeak, 
           className="btn-secondary" 
           style={{ justifyContent: 'center', padding: '1rem', color: 'var(--accent-maroon)', backgroundColor: '#F8E8E8', borderColor: 'var(--accent-maroon)' }}
         >
-          ❌ Hard / Still Learning
+          Hard / Still Learning
         </button>
 
         <button 
@@ -114,7 +114,7 @@ export default function SpacedRepetitionView({ srsData, onRecordScore, onSpeak, 
           className="btn-primary" 
           style={{ justifyContent: 'center', padding: '1rem', backgroundColor: 'var(--accent-forest-green)' }}
         >
-          ✅ Easy / Remembered
+          Easy / Remembered
         </button>
       </div>
 

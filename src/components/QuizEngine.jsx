@@ -97,12 +97,12 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
             Quiz Completed!
           </h2>
           <p style={{ fontSize: '1.1rem', color: '#554433', marginBottom: '1.5rem' }}>
-            You scored **{score}** out of **{questions.length}** ({percentage}%)
+            You scored <strong>{score}</strong> out of <strong>{questions.length}</strong> ({percentage}%)
           </p>
 
           <div style={{ padding: '1rem', backgroundColor: 'var(--surface-cream)', borderRadius: '12px', marginBottom: '1.75rem' }}>
             <span style={{ fontWeight: '700', color: percentage >= 70 ? 'var(--accent-forest-green)' : 'var(--accent-maroon)' }}>
-              {percentage >= 80 ? '🎉 Excellent Mastery of Kokborok!' : percentage >= 50 ? '👍 Good Progress! Keep Practicing!' : '💪 Keep Learning! Review the lesson cards.'}
+              {percentage >= 80 ? 'Excellent Mastery of Kokborok!' : percentage >= 50 ? 'Good Progress! Keep Practicing!' : 'Keep Learning! Review the lesson cards.'}
             </span>
           </div>
 
@@ -233,8 +233,8 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
           }}>
             <div>
               {(selectedOption === currentQ.correctAnswer || userInput.trim().toLowerCase() === currentQ.correctAnswer.toLowerCase())
-                ? '✨ Correct! Outstanding!'
-                : `❌ Incorrect. Correct answer: "${currentQ.correctAnswer}"`}
+                ? 'Correct! Outstanding!'
+                : `Incorrect. Correct answer: "${currentQ.correctAnswer}"`}
             </div>
             <button 
               onClick={() => onSpeak(currentQ.correctAnswer)}

@@ -126,7 +126,7 @@ export default function ProgressDashboard({
         {isSupabaseConfigured() ? (
           <div>
             <p style={{ fontSize: '0.9rem', color: '#554433', marginBottom: '1rem' }}>
-              ⚡ **Supabase Backend Active**: Free tier PostgreSQL database is connected and ready.
+              <strong>Supabase Backend Active</strong>: Free tier PostgreSQL database is connected and ready.
             </p>
 
             {userSession ? (
@@ -181,14 +181,14 @@ export default function ProgressDashboard({
         ) : (
           <div>
             <p style={{ fontSize: '0.9rem', color: '#665544', marginBottom: '0.5rem' }}>
-              💡 **Supabase Free Tier Integration Supported**: To enable Cloud Database sync, add your Supabase credentials to `.env` or Vercel environment variables:
+              <strong>Supabase Free Tier Integration Supported</strong>: To enable Cloud Database sync, add your Supabase credentials to `.env` or Vercel environment variables:
             </p>
             <div style={{ padding: '0.75rem', backgroundColor: 'var(--surface-cream)', borderRadius: '8px', fontSize: '0.8rem', fontFamily: 'monospace', color: 'var(--accent-deep-maroon)' }}>
               VITE_SUPABASE_URL=https://your-project.supabase.co<br/>
               VITE_SUPABASE_ANON_KEY=your-anon-key
             </div>
             <p style={{ fontSize: '0.8rem', color: '#776655', marginTop: '0.5rem' }}>
-              Currently running in **Guest Mode** (all streaks & progress saved automatically in your browser).
+              Currently running in <strong>Guest Mode</strong> (all streaks & progress saved automatically in your browser).
             </p>
           </div>
         )}
