@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { CheckCircle, XCircle, Volume2, RotateCcw, ArrowRight, Award, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CheckCircle, XCircle, Volume2, RotateCcw, ArrowRight, Award } from 'lucide-react';
 import { dictionaryData } from '../data/dictionaryData';
 import { uiTranslations } from '../data/uiTranslations';
 
 export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
   const t = uiTranslations[lang] || uiTranslations.en;
   
-  const [quizMode, setQuizMode] = useState('mcq'); // 'mcq' | 'fill' | 'matching'
+  const [quizMode, setQuizMode] = useState('mcq'); // 'mcq' | 'fill'
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [userInput, setUserInput] = useState('');
@@ -15,7 +15,7 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
   const [isFinished, setIsFinished] = useState(false);
 
   // Generate quiz items pool from dictionaryData or specific lesson items
-  const questions = lesson && lesson.items ? lesson.items.map(item => ({
+  const questions = lesson && lesson.items && lesson.items.length > 0 ? lesson.items.map(item => ({
     question: `What is the Kokborok word for "${item.english || item.meaning}"?`,
     correctAnswer: item.kokborok || item.root,
     english: item.english || item.meaning,
@@ -27,22 +27,22 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
     bengali: item.bengali
   }));
 
-  const currentQ = questions[currentIndex];
+  const currentQ = questions[currentIndex] || questions[0];
+  const [currentOptions, setCurrentOptions] = useState([]);
 
-  // Generate 4 multiple-choice options for current question
-  const getOptions = () => {
-    if (!currentQ) return [];
+  // Dynamically compute options whenever question index or lesson changes
+  useEffect(() => {
+    if (!currentQ) return;
+    const targetAnswer = currentQ.correctAnswer;
     const distractorPool = dictionaryData
       .map(d => d.kokborok)
-      .filter(w => w !== currentQ.correctAnswer);
+      .filter(w => w && w !== targetAnswer);
     
     // Pick 3 random distractors
     const shuffled = [...distractorPool].sort(() => 0.5 - Math.random()).slice(0, 3);
-    const options = [currentQ.correctAnswer, ...shuffled];
-    return options.sort(() => 0.5 - Math.random());
-  };
-
-  const [currentOptions, setCurrentOptions] = useState(getOptions());
+    const options = [targetAnswer, ...shuffled].sort(() => 0.5 - Math.random());
+    setCurrentOptions(options);
+  }, [currentIndex, lesson]);
 
   const handleSelectOption = (option) => {
     if (isAnswered) return;
@@ -70,11 +70,10 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
       setIsAnswered(false);
       setSelectedOption(null);
       setUserInput('');
-      setCurrentOptions(getOptions());
     } else {
       setIsFinished(true);
       if (onCompleteQuiz) {
-        onCompleteQuiz(score + (selectedOption === currentQ?.correctAnswer ? 1 : 0), questions.length);
+        onCompleteQuiz(score, questions.length);
       }
     }
   };
@@ -86,7 +85,6 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
     setIsFinished(false);
     setSelectedOption(null);
     setUserInput('');
-    setCurrentOptions(getOptions());
   };
 
   if (isFinished) {
