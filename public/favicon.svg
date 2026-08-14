@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Rounded Card Base in Deep Maroon -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="#7C2A2A" stroke="#E4D6B8" stroke-width="2"/>
+  
+  <!-- Kokborok 'ক' Letter in Gold / Cream Serif -->
+  <text x="32" y="42" font-family="'Fraunces', 'Georgia', serif" font-weight="900" font-size="34" fill="#FFFDF8" text-anchor="middle">ক</text>
+  
+  <!-- Bottom 5-Stripe Risa Accent Bar -->
+  <g transform="translate(8, 52)">
+    <rect x="0" y="0" width="9.6" height="4" fill="#7C2A2A" rx="1"/>
+    <rect x="9.6" y="0" width="9.6" height="4" fill="#C6862B"/>
+    <rect x="19.2" y="0" width="9.6" height="4" fill="#33513B"/>
+    <rect x="28.8" y="0" width="9.6" height="4" fill="#2F5C58"/>
+    <rect x="38.4" y="0" width="9.6" height="4" fill="#5C1F1F" rx="1"/>
+  </g>
+</svg>

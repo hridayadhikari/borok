@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Work+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+  /* Color Palette - Tripuri Handwoven Risa/Rignai Textile Tones */
+  --bg-warm-cream: #FAF5EC;
+  --text-ink: #2B2119;
+  --accent-maroon: #7C2A2A;
+  --accent-deep-maroon: #5C1F1F;
+  --accent-ochre: #C6862B;
+  --accent-forest-green: #33513B;
+  --accent-teal: #2F5C58;
+  --surface-cream: #F0E4C8;
+  --surface-card: #FFFDF8;
+  --border-hairline: #E4D6B8;
+  
+  /* Typography */
+  --font-heading: 'Fraunces', serif;
+  --font-body: 'Work Sans', sans-serif;
+  
+  /* Layout & Shadows */
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+  --shadow-soft: 0 4px 20px rgba(43, 33, 25, 0.07);
+  --shadow-hover: 0 8px 30px rgba(43, 33, 25, 0.12);
+  --transition-smooth: all 0.25s ease-in-out;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-warm-cream);
+  color: var(--text-ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--accent-deep-maroon);
+}
+
+/* Risa / Rignai 5-Stripe Woven Motif */
+.risa-stripe {
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    var(--accent-maroon) 0%, var(--accent-maroon) 20%,
+    var(--accent-ochre) 20%, var(--accent-ochre) 40%,
+    var(--accent-forest-green) 40%, var(--accent-forest-green) 60%,
+    var(--accent-teal) 60%, var(--accent-teal) 80%,
+    var(--accent-deep-maroon) 80%, var(--accent-deep-maroon) 100%
+  );
+}
+
+.risa-stripe-thick {
+  height: 10px;
+  border-radius: 4px;
+  background: linear-gradient(
+    to right,
+    var(--accent-maroon) 0%, var(--accent-maroon) 20%,
+    var(--accent-ochre) 20%, var(--accent-ochre) 40%,
+    var(--accent-forest-green) 40%, var(--accent-forest-green) 60%,
+    var(--accent-teal) 60%, var(--accent-teal) 80%,
+    var(--accent-deep-maroon) 80%, var(--accent-deep-maroon) 100%
+  );
+}
+
+/* Eyebrows & Small Labels */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-ochre);
+}
+
+/* Buttons & Pill Controls */
+.btn-primary {
+  background-color: var(--accent-maroon);
+  color: #FFFDF8;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-deep-maroon);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--surface-cream);
+  color: var(--text-ink);
+  border: 1px solid var(--border-hairline);
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.btn-secondary:hover {
+  background-color: #E4D6B8;
+}
+
+.chip-pill {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--border-hairline);
+  background-color: var(--surface-card);
+  color: var(--text-ink);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.chip-pill.active {
+  background-color: var(--accent-maroon);
+  color: #FFFDF8;
+  border-color: var(--accent-maroon);
+}
+
+/* Cards & Containers */
+.card-base {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+  transition: var(--transition-smooth);
+}
+
+.card-base:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* 3D Flip Card Container */
+.flip-card-container {
+  perspective: 1000px;
+  width: 100%;
+  min-height: 240px;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card-container.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-hairline);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.flip-card-front {
+  background-color: var(--surface-card);
+  color: var(--text-ink);
+}
+
+.flip-card-back {
+  background-color: var(--surface-cream);
+  color: var(--accent-deep-maroon);
+  transform: rotateY(180deg);
+}
+
+/* Quiz Feedback States */
+.quiz-option {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-hairline);
+  background-color: var(--surface-card);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--accent-ochre);
+  background-color: #FAF2E2;
+}
+
+.quiz-option.correct {
+  background-color: #E2ECE4 !important;
+  border-color: var(--accent-forest-green) !important;
+  color: var(--accent-forest-green) !important;
+  font-weight: 700;
+}
+
+.quiz-option.incorrect {
+  background-color: #F8E8E8 !important;
+  border-color: var(--accent-maroon) !important;
+  color: var(--accent-maroon) !important;
+  font-weight: 700;
+}
+
+/* Responsive Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Persistent Footer Creator Credit Styling */
+.creator-credit-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+@media (max-width: 600px) {
+  .creator-credit-bar {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.creator-link-icon {
+  color: var(--accent-maroon);
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.creator-link-icon:hover {
+  color: var(--accent-deep-maroon);
+  transform: translateY(-2px);
+}
+
+/* Utility Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}

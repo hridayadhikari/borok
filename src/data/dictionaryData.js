@@ -1,0 +1,85 @@
+export const dictionaryData = [
+  // Pronouns & Questions
+  { id: "dict-1", kokborok: "Ang", english: "I", bengali: "আমি", category: "Pronouns", scriptBn: "আং" },
+  { id: "dict-2", kokborok: "Chwng", english: "We", bengali: "আমরা", category: "Pronouns", scriptBn: "চুং" },
+  { id: "dict-3", kokborok: "Nwng", english: "You", bengali: "তুমি", category: "Pronouns", scriptBn: "নুং" },
+  { id: "dict-4", kokborok: "Nohrok", english: "You all", bengali: "তোমরা সব", category: "Pronouns", scriptBn: "নোহোরক" },
+  { id: "dict-5", kokborok: "Bo", english: "He / She", bengali: "সে / তিনি", category: "Pronouns", scriptBn: "বো" },
+  { id: "dict-6", kokborok: "Bohrok", english: "They", bengali: "তারা", category: "Pronouns", scriptBn: "বোহোরক" },
+  { id: "dict-7", kokborok: "Ani", english: "My / Mine", bengali: "আমার", category: "Possessives", scriptBn: "আনি" },
+  { id: "dict-8", kokborok: "Nini", english: "Your / Yours", bengali: "তোমার", category: "Possessives", scriptBn: "নিনি" },
+  { id: "dict-9", kokborok: "Chini", english: "Ours", bengali: "আমাদের", category: "Possessives", scriptBn: "চিনি" },
+  { id: "dict-10", kokborok: "Bin", english: "His / Her", bengali: "তার", category: "Possessives", scriptBn: "বিন" },
+  { id: "dict-11", kokborok: "Sabo", english: "Who", bengali: "কে", category: "Questions", scriptBn: "সাবো" },
+  { id: "dict-12", kokborok: "Tamo", english: "What", bengali: "কী", category: "Questions", scriptBn: "তামো" },
+  { id: "dict-13", kokborok: "Boro", english: "Where", bengali: "কোথায়", category: "Questions", scriptBn: "বোরো" },
+  { id: "dict-14", kokborok: "Buphru", english: "When", bengali: "কখন", category: "Questions", scriptBn: "বুফ্রু" },
+  { id: "dict-15", kokborok: "Tamungwi", english: "Why", bengali: "কেন", category: "Questions", scriptBn: "তামুংউই" },
+  { id: "dict-16", kokborok: "Bahai", english: "How", bengali: "কেমন", category: "Questions", scriptBn: "বাহাই" },
+
+  // Verbs
+  { id: "dict-17", kokborok: "Chah", english: "to eat", bengali: "খাওয়া", category: "Verbs", scriptBn: "চাহ" },
+  { id: "dict-18", kokborok: "Swi", english: "to write", bengali: "লেখা", category: "Verbs", scriptBn: "সুই" },
+  { id: "dict-19", kokborok: "Him", english: "to walk", bengali: "হাঁটা", category: "Verbs", scriptBn: "হিম" },
+  { id: "dict-20", kokborok: "Achuk", english: "to sit", bengali: "বসা", category: "Verbs", scriptBn: "আচুক" },
+  { id: "dict-21", kokborok: "Thahng", english: "to go", bengali: "যাওয়া", category: "Verbs", scriptBn: "থাং" },
+  { id: "dict-22", kokborok: "Phai", english: "to come", bengali: "আসা", category: "Verbs", scriptBn: "ফাই" },
+  { id: "dict-23", kokborok: "Pori", english: "to read", bengali: "পড়া", category: "Verbs", scriptBn: "পরি" },
+  { id: "dict-24", kokborok: "Rwchap", english: "to sing", bengali: "গান গাওয়া", category: "Verbs", scriptBn: "রুচাপ" },
+  { id: "dict-25", kokborok: "Mwsa", english: "to dance", bengali: "নাচা", category: "Verbs", scriptBn: "মুসা" },
+  { id: "dict-26", kokborok: "Nai", english: "to see / watch", bengali: "দেখা", category: "Verbs", scriptBn: "নাই" },
+  { id: "dict-27", kokborok: "Sa", english: "to speak", bengali: "বলা", category: "Verbs", scriptBn: "সা" },
+  { id: "dict-28", kokborok: "Rom", english: "to hold / catch", bengali: "ধরা", category: "Verbs", scriptBn: "রম" },
+  { id: "dict-29", kokborok: "Berai", english: "to visit / tour", bengali: "ঘোরাফেরা করা", category: "Verbs", scriptBn: "বেরাই" },
+  { id: "dict-30", kokborok: "Nwng", english: "to drink", bengali: "পান করা", category: "Verbs", scriptBn: "নুং" },
+
+  // Time & Nature
+  { id: "dict-31", kokborok: "Tini", english: "Today", bengali: "আজ", category: "Time", scriptBn: "তিনি" },
+  { id: "dict-32", kokborok: "Khwna", english: "Tomorrow", bengali: "আগামীকাল", category: "Time", scriptBn: "খুনা" },
+  { id: "dict-33", kokborok: "Miya", english: "Yesterday", bengali: "গতকাল", category: "Time", scriptBn: "মিয়া" },
+  { id: "dict-34", kokborok: "Phung", english: "Morning", bengali: "সকাল", category: "Time", scriptBn: "ফুং" },
+  { id: "dict-35", kokborok: "Hor", english: "Night", bengali: "রাত", category: "Time", scriptBn: "হোর" },
+  { id: "dict-36", kokborok: "Sal", english: "Sun / Day", bengali: "সূর্য / দিন", category: "Nature", scriptBn: "সাল" },
+  { id: "dict-37", kokborok: "Tal", english: "Moon / Month", bengali: "চাঁদ / মাস", category: "Nature", scriptBn: "তাল" },
+  { id: "dict-38", kokborok: "Nokha", english: "Sky", bengali: "আকাশ", category: "Nature", scriptBn: "নোখা" },
+  { id: "dict-39", kokborok: "Twi", english: "Water", bengali: "জল / পানি", category: "Nature", scriptBn: "তুই" },
+  { id: "dict-40", kokborok: "Twima", english: "River", bengali: "নদী", category: "Nature", scriptBn: "তুইমা" },
+  { id: "dict-41", kokborok: "Uatwi", english: "Rain", bengali: "বৃষ্টি", category: "Nature", scriptBn: "উয়াতুই" },
+  { id: "dict-42", kokborok: "Buphang", english: "Tree", bengali: "গাছ", category: "Nature", scriptBn: "বুফাং" },
+
+  // Anatomy / Body
+  { id: "dict-43", kokborok: "Bokhorok", english: "Head", bengali: "মাথা", category: "Body Parts", scriptBn: "বোখোরক" },
+  { id: "dict-44", kokborok: "Bukhuk", english: "Mouth", bengali: "মুখ", category: "Body Parts", scriptBn: "বুখুক" },
+  { id: "dict-45", kokborok: "Mokol", english: "Eye", bengali: "চোখ", category: "Body Parts", scriptBn: "মোকোল" },
+  { id: "dict-46", kokborok: "Bukung", english: "Nose", bengali: "নাক", category: "Body Parts", scriptBn: "বুকুং" },
+  { id: "dict-47", kokborok: "Yak", english: "Hand", bengali: "হাত", category: "Body Parts", scriptBn: "ইয়াক" },
+  { id: "dict-48", kokborok: "Yakung", english: "Leg", bengali: "পা", category: "Body Parts", scriptBn: "ইয়াকুং" },
+  { id: "dict-49", kokborok: "Bwkha", english: "Heart", bengali: "হৃদয়", category: "Body Parts", scriptBn: "বুখা" },
+  { id: "dict-50", kokborok: "Bohok", english: "Stomach", bengali: "পেট", category: "Body Parts", scriptBn: "বোহোক" },
+
+  // Kinship
+  { id: "dict-51", kokborok: "Apha", english: "My Father", bengali: "আমার বাবা", category: "Kinship", scriptBn: "আফা" },
+  { id: "dict-52", kokborok: "Ama", english: "My Mother", bengali: "আমার মা", category: "Kinship", scriptBn: "আমা" },
+  { id: "dict-53", kokborok: "Takhuk", english: "Brother", bengali: "ভাই", category: "Kinship", scriptBn: "তাখুক" },
+  { id: "dict-54", kokborok: "Bukhuk", english: "Sister", bengali: "বোন", category: "Kinship", scriptBn: "বুখুক" },
+  { id: "dict-55", kokborok: "Angsajla", english: "My Son", bengali: "আমার ছেলে", category: "Kinship", scriptBn: "আংসাজলা" },
+  { id: "dict-56", kokborok: "Angsajwk", english: "My Daughter", bengali: "আমার মেয়ে", category: "Kinship", scriptBn: "আংসাজুক" },
+  { id: "dict-57", kokborok: "Angsai", english: "My Husband", bengali: "আমার স্বামী", category: "Kinship", scriptBn: "আংসাই" },
+  { id: "dict-58", kokborok: "Anghik", english: "My Wife", bengali: "আমার স্ত্রী", category: "Kinship", scriptBn: "আংহিক" },
+
+  // Colors & Tastes
+  { id: "dict-59", kokborok: "Kuphur", english: "White", bengali: "সাদা", category: "Colors", scriptBn: "কুফুর" },
+  { id: "dict-60", kokborok: "Kosom", english: "Black", bengali: "কালো", category: "Colors", scriptBn: "কোসোম" },
+  { id: "dict-61", kokborok: "Kwchak", english: "Red", bengali: "লাল", category: "Colors", scriptBn: "কুচাক" },
+  { id: "dict-62", kokborok: "Kwkhrang", english: "Green", bengali: "সবুজ", category: "Colors", scriptBn: "কুখ্রাং" },
+  { id: "dict-63", kokborok: "Kwtwi", english: "Sweet", bengali: "মিষ্টি", category: "Tastes", scriptBn: "কুতুই" },
+  { id: "dict-64", kokborok: "Kwkhwi", english: "Sour", bengali: "টক", category: "Tastes", scriptBn: "কুখুই" },
+  { id: "dict-65", kokborok: "Kwkha", english: "Bitter", bengali: "তিতা", category: "Tastes", scriptBn: "কুখা" },
+  { id: "dict-66", kokborok: "Kutung", english: "Hot", bengali: "গরম", category: "Tastes", scriptBn: "কুটুং" },
+
+  // Expressions & Polite Phrases
+  { id: "dict-67", kokborok: "Phung Kaham", english: "Good Morning", bengali: "সুপ্রভাত", category: "Greetings", scriptBn: "ফুং কাহাম" },
+  { id: "dict-68", kokborok: "Hor Kaham", english: "Good Night", bengali: "শুভ রাত্রি", category: "Greetings", scriptBn: "হোর কাহাম" },
+  { id: "dict-69", kokborok: "Hambai", english: "Thank you", bengali: "ধন্যবাদ", category: "Greetings", scriptBn: "হামবাই" },
+  { id: "dict-70", kokborok: "Malaiphiuanw", english: "See you again", bengali: "আবার দেখা হবে", category: "Greetings", scriptBn: "মালাইফিউয়ান" }
+];
