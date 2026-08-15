@@ -38,7 +38,10 @@ export default function ProgressDashboard({
       } else {
         const { error } = await supabase.auth.signUp({
           email: authEmail,
-          password: authPassword
+          password: authPassword,
+          options: {
+            emailRedirectTo: window.location.origin
+          }
         });
         if (error) setAuthMessage(error.message);
         else setAuthMessage('Account created! Please check your email to confirm sign up.');

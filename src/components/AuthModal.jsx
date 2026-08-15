@@ -36,7 +36,10 @@ export default function AuthModal({ isOpen, onClose, userSession, onSignOut }) {
       } else {
         const { error } = await client.auth.signUp({
           email: email.trim(),
-          password: password.trim()
+          password: password.trim(),
+          options: {
+            emailRedirectTo: window.location.origin
+          }
         });
         if (error) setMessage(error.message);
         else setMessage('Account created! Please check your email to confirm sign up.');
