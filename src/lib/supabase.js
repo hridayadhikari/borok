@@ -6,8 +6,8 @@ const getSupabaseCredentials = () => {
   const localUrl = localStorage.getItem('supabase_test_url') || '';
   const localKey = localStorage.getItem('supabase_test_key') || '';
 
-  const url = localUrl || envUrl || 'https://oezyzmmvigvkiqwntdxg.supabase.co';
-  const key = localKey || envKey || 'sb_publishable_pzvctES_8LU3FrW32nLjmA_RVlUaPeU';
+  const url = localUrl || envUrl;
+  const key = localKey || envKey;
 
   return {
     url,
