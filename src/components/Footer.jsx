@@ -67,10 +67,6 @@ export default function Footer({ setTab }) {
             <p style={{ fontSize: '0.85rem', color: '#524438', lineHeight: 1.5, marginBottom: '0.75rem' }}>
               Official language of Tripura (notified Jan 19, 1979) and TTAADC (notified Apr 20, 1999). Sino-Tibetan language family, Boro group.
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--accent-forest-green)', fontWeight: '600' }}>
-              <Shield size={16} />
-              <span>Government-Grade Audit Log Enabled</span>
-            </div>
           </div>
         </div>
 

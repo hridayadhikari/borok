@@ -89,19 +89,31 @@ export default function LessonView({
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
               <thead>
                 <tr style={{ borderBottom: '2px solid var(--border-hairline)', backgroundColor: 'var(--surface-cream)' }}>
-                  <th style={{ padding: '0.75rem 1rem' }}>Kokborok</th>
-                  <th style={{ padding: '0.75rem 1rem' }}>English</th>
-                  <th style={{ padding: '0.75rem 1rem' }}>Bengali</th>
+                  {lesson.items[0].root && <th style={{ padding: '0.75rem 1rem' }}>Root Verb</th>}
+                  {lesson.items[0].kokborok !== undefined && <th style={{ padding: '0.75rem 1rem' }}>Kokborok</th>}
+                  {lesson.items[0].english !== undefined && <th style={{ padding: '0.75rem 1rem' }}>English</th>}
+                  {lesson.items[0].meaning && <th style={{ padding: '0.75rem 1rem' }}>Meaning</th>}
+                  {lesson.items[0].present && <th style={{ padding: '0.75rem 1rem' }}>Present (-o / -di)</th>}
+                  {lesson.items[0].past && <th style={{ padding: '0.75rem 1rem' }}>Past (-kha)</th>}
+                  {lesson.items[0].future && <th style={{ padding: '0.75rem 1rem' }}>Future (-nai)</th>}
+                  {lesson.items[0].verbPresent && <th style={{ padding: '0.75rem 1rem' }}>Verb Present</th>}
+                  {lesson.items[0].verbPast && <th style={{ padding: '0.75rem 1rem' }}>Verb Past</th>}
+                  {lesson.items[0].verbFuture && <th style={{ padding: '0.75rem 1rem' }}>Verb Future</th>}
+                  {lesson.items[0].prefix && <th style={{ padding: '0.75rem 1rem' }}>Prefix</th>}
+                  {lesson.items[0].adjective && <th style={{ padding: '0.75rem 1rem' }}>Adjective</th>}
+                  {lesson.items[0].classifier && <th style={{ padding: '0.75rem 1rem' }}>Classifier</th>}
                   {lesson.items[0].type && <th style={{ padding: '0.75rem 1rem' }}>Type</th>}
                   {lesson.items[0].my && <th style={{ padding: '0.75rem 1rem' }}>1st Person (My)</th>}
                   {lesson.items[0].your && <th style={{ padding: '0.75rem 1rem' }}>2nd Person (Your)</th>}
                   {lesson.items[0].hisHer && <th style={{ padding: '0.75rem 1rem' }}>3rd Person (His/Her)</th>}
+                  {lesson.items[0].bengali !== undefined && <th style={{ padding: '0.75rem 1rem' }}>Bengali</th>}
                   <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Listen & Save</th>
                 </tr>
               </thead>
               <tbody>
                 {lesson.items.map((item, idx) => {
-                  const isBookmarked = bookmarks.some(b => b.kokborok === item.kokborok);
+                  const targetWord = item.kokborok || item.root || item.adjective || item.present || item.meaning;
+                  const isBookmarked = bookmarks.some(b => b.kokborok === targetWord);
                   return (
                     <tr 
                       key={idx} 
@@ -110,15 +122,35 @@ export default function LessonView({
                         backgroundColor: idx % 2 === 0 ? 'var(--surface-card)' : '#FAF5EC'
                       }}
                     >
-                      <td style={{ padding: '0.85rem 1rem', fontWeight: '700', color: 'var(--accent-maroon)', fontSize: '1.05rem' }}>
-                        {item.kokborok || item.root}
-                      </td>
-                      <td style={{ padding: '0.85rem 1rem', color: 'var(--text-ink)' }}>
-                        {item.english || item.meaning}
-                      </td>
-                      <td style={{ padding: '0.85rem 1rem', color: '#554433' }}>
-                        {item.bengali || '-'}
-                      </td>
+                      {item.root && (
+                        <td style={{ padding: '0.85rem 1rem', fontWeight: '700', color: 'var(--accent-maroon)', fontSize: '1.05rem' }}>
+                          {item.root}
+                        </td>
+                      )}
+                      {item.kokborok !== undefined && (
+                        <td style={{ padding: '0.85rem 1rem', fontWeight: '700', color: 'var(--accent-maroon)', fontSize: '1.05rem' }}>
+                          {item.kokborok}
+                        </td>
+                      )}
+                      {item.english !== undefined && (
+                        <td style={{ padding: '0.85rem 1rem', color: 'var(--text-ink)' }}>
+                          {item.english}
+                        </td>
+                      )}
+                      {item.meaning && (
+                        <td style={{ padding: '0.85rem 1rem', color: 'var(--text-ink)' }}>
+                          {item.meaning}
+                        </td>
+                      )}
+                      {item.present && <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#2C5E3B' }}>{item.present}</td>}
+                      {item.past && <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#8C2D19' }}>{item.past}</td>}
+                      {item.future && <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#2B5B84' }}>{item.future}</td>}
+                      {item.verbPresent && <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#2C5E3B' }}>{item.verbPresent}</td>}
+                      {item.verbPast && <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#8C2D19' }}>{item.verbPast}</td>}
+                      {item.verbFuture && <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#2B5B84' }}>{item.verbFuture}</td>}
+                      {item.prefix && <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: 'var(--accent-ochre)' }}>{item.prefix}</td>}
+                      {item.adjective && <td style={{ padding: '0.85rem 1rem', fontWeight: '700', color: 'var(--accent-maroon)' }}>{item.adjective}</td>}
+                      {item.classifier && <td style={{ padding: '0.85rem 1rem', fontWeight: '700', color: 'var(--accent-forest-green)' }}>{item.classifier}</td>}
                       {item.type && (
                         <td style={{ padding: '0.85rem 1rem', fontSize: '0.85rem', color: 'var(--accent-ochre)', fontWeight: '600' }}>
                           {item.type}
@@ -127,10 +159,15 @@ export default function LessonView({
                       {item.my && <td style={{ padding: '0.85rem 1rem', fontWeight: '600' }}>{item.my}</td>}
                       {item.your && <td style={{ padding: '0.85rem 1rem', fontWeight: '600' }}>{item.your}</td>}
                       {item.hisHer && <td style={{ padding: '0.85rem 1rem', fontWeight: '600' }}>{item.hisHer}</td>}
+                      {item.bengali !== undefined && (
+                        <td style={{ padding: '0.85rem 1rem', color: '#554433' }}>
+                          {item.bengali || '-'}
+                        </td>
+                      )}
                       <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '0.4rem' }}>
                           <button 
-                            onClick={() => onSpeak(item.kokborok || item.root)}
+                            onClick={() => onSpeak(targetWord)}
                             className="btn-secondary" 
                             style={{ padding: '0.3rem 0.6rem' }}
                             title="Listen"
@@ -138,7 +175,7 @@ export default function LessonView({
                             <Volume2 size={15} />
                           </button>
                           <button 
-                            onClick={() => onBookmark({ kokborok: item.kokborok || item.root, english: item.english || item.meaning, bengali: item.bengali })}
+                            onClick={() => onBookmark({ kokborok: targetWord, english: item.english || item.meaning, bengali: item.bengali })}
                             className="btn-secondary" 
                             style={{ padding: '0.3rem 0.6rem', color: isBookmarked ? 'var(--accent-ochre)' : '#887766' }}
                             title="Bookmark"
@@ -258,6 +295,18 @@ export default function LessonView({
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* LESSON EXERCISE PROMPT */}
+      {lesson.exercise && (
+        <div className="card-base" style={{ marginBottom: '2rem', backgroundColor: '#FFFDF9', borderLeft: '4px solid var(--accent-ochre)', border: '1px solid #EED8B0' }}>
+          <div className="eyebrow" style={{ color: 'var(--accent-maroon)', marginBottom: '0.4rem' }}>
+            Lesson Exercise Prompt
+          </div>
+          <p style={{ margin: 0, fontWeight: '600', color: '#6A4518', fontSize: '1rem' }}>
+            {lesson.exercise}
+          </p>
         </div>
       )}
 

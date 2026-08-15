@@ -40,6 +40,7 @@ export default function App() {
   });
 
   const [selectedLesson, setSelectedLesson] = useState(null);
+  const [activeQuizLesson, setActiveQuizLesson] = useState(null);
   const [lang, setLang] = useState('en');
   const [userSession, setUserSession] = useState(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -256,7 +257,7 @@ export default function App() {
 
       {/* Main Content Area */}
       <main style={{ flex: 1 }}>
-        {selectedLesson ? (
+        {currentTab === 'learn' && selectedLesson ? (
           <LessonView
             lesson={selectedLesson}
             onBack={() => setSelectedLesson(null)}
@@ -264,6 +265,7 @@ export default function App() {
             onToggleComplete={handleToggleCompleteLesson}
             onSpeak={handleSpeak}
             onStartQuiz={(l) => {
+              setActiveQuizLesson(l);
               setSelectedLesson(null);
               setCurrentTab('quiz');
             }}
@@ -293,11 +295,12 @@ export default function App() {
 
             {currentTab === 'quiz' && (
               <QuizEngine
-                lesson={null}
+                lesson={activeQuizLesson}
+                onSelectLesson={(lesson) => setActiveQuizLesson(lesson)}
                 onCompleteQuiz={(score, total) => {
                   handleAddAuditLog({
                     action: 'QUIZ_COMPLETED',
-                    details: `Completed quiz with score ${score}/${total}`,
+                    details: `Completed quiz for ${activeQuizLesson ? `Chapter ${activeQuizLesson.number}` : 'All Chapters'} with score ${score}/${total}`,
                     timestamp: new Date().toLocaleString()
                   });
                 }}

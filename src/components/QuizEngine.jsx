@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Volume2, RotateCcw, ArrowRight, Award } from 'lucide-react';
 import { dictionaryData } from '../data/dictionaryData';
+import { lessonsData } from '../data/lessonsData';
 import { uiTranslations } from '../data/uiTranslations';
 
-export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
+export default function QuizEngine({ lesson, onSelectLesson, onCompleteQuiz, onSpeak, lang }) {
   const t = uiTranslations[lang] || uiTranslations.en;
   
   const [quizMode, setQuizMode] = useState('mcq'); // 'mcq' | 'fill'
@@ -14,42 +15,97 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
   const [isAnswered, setIsAnswered] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
 
-  // Generate quiz items pool from dictionaryData or specific lesson items
-  const questions = lesson && lesson.items && lesson.items.length > 0 ? lesson.items.map(item => ({
-    question: `What is the Kokborok word for "${item.english || item.meaning}"?`,
-    correctAnswer: item.kokborok || item.root,
-    english: item.english || item.meaning,
-    bengali: item.bengali
-  })) : dictionaryData.slice(0, 10).map(item => ({
-    question: `What is the Kokborok word for "${item.english}"?`,
-    correctAnswer: item.kokborok,
-    english: item.english,
-    bengali: item.bengali
-  }));
+  // Helper function to shuffle an array (Fisher-Yates shuffle)
+  const shuffleArray = (array) => {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
 
-  const currentQ = questions[currentIndex] || questions[0];
+  // Generate quiz items pool from specific lesson items/sampleSentences or dictionaryData fallback
+  const getQuestionsForLesson = (l) => {
+    let pool = [];
+    if (l) {
+      if (l.items && l.items.length > 0) {
+        pool = l.items.map(item => {
+          const target = item.kokborok || item.root || item.present;
+          const questionText = item.meaning 
+            ? `What is the Kokborok word/root for "${item.meaning}"?`
+            : `What is the Kokborok word for "${item.english}"?`;
+          return {
+            question: questionText,
+            correctAnswer: target,
+            english: item.english || item.meaning,
+            bengali: item.bengali
+          };
+        });
+      } else if (l.sampleSentences && l.sampleSentences.length > 0) {
+        pool = l.sampleSentences.map(item => ({
+          question: `How do you say "${item.english}" in Kokborok?`,
+          correctAnswer: item.kokborok,
+          english: item.english,
+          bengali: item.bengali
+        }));
+      }
+    } else {
+      pool = dictionaryData.slice(0, 15).map(item => ({
+        question: `What is the Kokborok word for "${item.english}"?`,
+        correctAnswer: item.kokborok,
+        english: item.english,
+        bengali: item.bengali
+      }));
+    }
+
+    return shuffleArray(pool);
+  };
+
+  const [questions, setQuestions] = useState(() => getQuestionsForLesson(lesson));
+
+  // Reset and reload questions whenever lesson prop changes
+  useEffect(() => {
+    setQuestions(getQuestionsForLesson(lesson));
+    setCurrentIndex(0);
+    setScore(0);
+    setIsAnswered(false);
+    setIsFinished(false);
+    setSelectedOption(null);
+    setUserInput('');
+  }, [lesson]);
+
+  const currentQ = questions[currentIndex] || questions[0] || { question: '', correctAnswer: '' };
   const [currentOptions, setCurrentOptions] = useState([]);
 
-  // Dynamically compute options whenever question index or lesson changes
+  // Dynamically compute options whenever question index or current questions change
   useEffect(() => {
-    if (!currentQ) return;
+    if (!currentQ || !currentQ.correctAnswer) return;
     const targetAnswer = currentQ.correctAnswer;
-    const distractorPool = dictionaryData
-      .map(d => d.kokborok)
+    
+    // Distractors pool: prioritize answers from current questions pool first, fallback to dictionaryData
+    const currentLessonAnswers = questions
+      .map(q => q.correctAnswer)
       .filter(w => w && w !== targetAnswer);
     
+    const dictionaryAnswers = dictionaryData
+      .map(d => d.kokborok)
+      .filter(w => w && w !== targetAnswer && !currentLessonAnswers.includes(w));
+    
+    const combinedPool = Array.from(new Set([...currentLessonAnswers, ...dictionaryAnswers]));
+    
     // Pick 3 random distractors
-    const shuffled = [...distractorPool].sort(() => 0.5 - Math.random()).slice(0, 3);
+    const shuffled = [...combinedPool].sort(() => 0.5 - Math.random()).slice(0, 3);
     const options = [targetAnswer, ...shuffled].sort(() => 0.5 - Math.random());
     setCurrentOptions(options);
-  }, [currentIndex, lesson]);
+  }, [currentIndex, questions]);
 
   const handleSelectOption = (option) => {
     if (isAnswered) return;
     setSelectedOption(option);
     setIsAnswered(true);
 
-    if (option === currentQ.correctAnswer) {
+    if (currentQ && option === currentQ.correctAnswer) {
       setScore(prev => prev + 1);
     }
   };
@@ -58,7 +114,7 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
     if (isAnswered || !userInput.trim()) return;
     setIsAnswered(true);
     const normalizedInput = userInput.trim().toLowerCase();
-    const normalizedTarget = currentQ.correctAnswer.trim().toLowerCase();
+    const normalizedTarget = (currentQ?.correctAnswer || '').trim().toLowerCase();
     if (normalizedInput === normalizedTarget) {
       setScore(prev => prev + 1);
     }
@@ -79,6 +135,8 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
   };
 
   const handleRestart = () => {
+    const newQuestions = getQuestionsForLesson(lesson);
+    setQuestions(newQuestions);
     setCurrentIndex(0);
     setScore(0);
     setIsAnswered(false);
@@ -87,11 +145,63 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
     setUserInput('');
   };
 
-  if (isFinished) {
-    const percentage = Math.round((score / questions.length) * 100);
+  const renderChapterSelector = () => (
+    <div style={{ marginBottom: '1.25rem' }}>
+      <div style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--accent-maroon)', marginBottom: '0.4rem' }}>
+        Select Chapter Quiz
+      </div>
+      <select
+        value={lesson ? lesson.id : 'all'}
+        onChange={(e) => {
+          const selectedId = e.target.value;
+          if (selectedId === 'all') {
+            if (onSelectLesson) onSelectLesson(null);
+          } else {
+            const foundLesson = lessonsData.find(l => l.id === parseInt(selectedId, 10));
+            if (onSelectLesson) onSelectLesson(foundLesson);
+          }
+        }}
+        style={{
+          width: '100%',
+          padding: '0.75rem 1rem',
+          borderRadius: '10px',
+          border: '2px solid var(--border-hairline)',
+          backgroundColor: 'var(--surface-card)',
+          color: 'var(--accent-deep-maroon)',
+          fontSize: '1rem',
+          fontWeight: '600',
+          cursor: 'pointer',
+          fontFamily: 'inherit'
+        }}
+      >
+        <option value="all">🌟 Comprehensive Mixed Quiz (All Chapters & Dictionary)</option>
+        {lessonsData.map((l) => (
+          <option key={l.id} value={l.id}>
+            Chapter {l.number}: {l.title} ({l.items ? `${l.items.length} items` : `${l.sampleSentences ? l.sampleSentences.length : 0} sentences`})
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
+  if (!questions || questions.length === 0) {
     return (
-      <div className="container animate-fade-in" style={{ padding: '3rem 1rem', maxWidth: '600px', textAlign: 'center' }}>
-        <div className="card-base" style={{ backgroundColor: 'var(--surface-card)', borderTop: '6px solid var(--accent-forest-green)' }}>
+      <div className="container animate-fade-in" style={{ padding: '2rem 1rem', maxWidth: '680px' }}>
+        {renderChapterSelector()}
+        <div className="card-base" style={{ backgroundColor: 'var(--surface-card)', textAlign: 'center', padding: '2.5rem 1rem' }}>
+          <p style={{ fontSize: '1.1rem', color: '#554433', margin: 0 }}>No quiz questions available for this chapter yet.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isFinished) {
+    const totalCount = questions.length || 1;
+    const percentage = Math.round((score / totalCount) * 100);
+    return (
+      <div className="container animate-fade-in" style={{ padding: '2rem 1rem', maxWidth: '680px' }}>
+        {renderChapterSelector()}
+        <div className="card-base" style={{ backgroundColor: 'var(--surface-card)', borderTop: '6px solid var(--accent-forest-green)', textAlign: 'center' }}>
           <Award size={64} color="var(--accent-forest-green)" style={{ margin: '0 auto 1rem auto' }} />
           <h2 style={{ fontSize: '1.8rem', color: 'var(--accent-deep-maroon)', marginBottom: '0.5rem' }}>
             Quiz Completed!
@@ -117,10 +227,12 @@ export default function QuizEngine({ lesson, onCompleteQuiz, onSpeak, lang }) {
   return (
     <div className="container animate-fade-in" style={{ padding: '2rem 1rem', maxWidth: '680px' }}>
       
-      {/* Header & Mode Switcher */}
+      {/* Chapter / Lesson Picker */}
+      {renderChapterSelector()}
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
         <span className="eyebrow">
-          Practice Suite • Question {currentIndex + 1} / {questions.length}
+          {lesson ? `Chapter ${lesson.number} Quiz` : 'Practice Suite'} • Question {currentIndex + 1} / {questions.length}
         </span>
         <div style={{ display: 'flex', gap: '0.4rem' }}>
           <button 
