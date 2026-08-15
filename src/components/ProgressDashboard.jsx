@@ -43,11 +43,26 @@ export default function ProgressDashboard({
             emailRedirectTo: window.location.origin
           }
         });
-        if (error) setAuthMessage(error.message);
-        else setAuthMessage('Account created! Please check your email to confirm sign up.');
+        const isRateLimit = error && (
+          error.message.toLowerCase().includes('rate limit') || 
+          error.message.toLowerCase().includes('email rate limit') ||
+          error.status === 429
+        );
+        if (isRateLimit) {
+          setAuthMessage({
+            type: 'rate_limit',
+            title: 'Hourly Email Limit Reached',
+            body: 'Supabase email verification quota has been momentarily exceeded. Please try again in 1 hour.',
+            note: 'Your local progress & streak are safe on this device!'
+          });
+        } else if (error) {
+          setAuthMessage({ type: 'error', text: error.message });
+        } else {
+          setAuthMessage({ type: 'success', text: 'Account created! Please check your email to confirm sign up.' });
+        }
       }
     } catch (err) {
-      setAuthMessage(err.message);
+      setAuthMessage({ type: 'error', text: err.message });
     }
   };
 

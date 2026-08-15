@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Mail, Lock, User, LogOut, CheckCircle } from 'lucide-react';
+import { X, Mail, Lock, User, LogOut, CheckCircle, Clock, ShieldCheck } from 'lucide-react';
 import { getSupabaseClient } from '../lib/supabase';
 
 export default function AuthModal({ isOpen, onClose, userSession, onSignOut }) {
@@ -28,9 +28,9 @@ export default function AuthModal({ isOpen, onClose, userSession, onSignOut }) {
           email: email.trim(),
           password: password.trim()
         });
-        if (error) setMessage(error.message);
+        if (error) setMessage({ type: 'error', text: error.message });
         else {
-          setMessage('Successfully logged in! Your streak and progress are now syncing to your account.');
+          setMessage({ type: 'success', text: 'Successfully logged in! Your streak and progress are now syncing to your account.' });
           setTimeout(() => onClose(), 1200);
         }
       } else {
@@ -41,11 +41,26 @@ export default function AuthModal({ isOpen, onClose, userSession, onSignOut }) {
             emailRedirectTo: window.location.origin
           }
         });
-        if (error) setMessage(error.message);
-        else setMessage('Account created! Please check your email to confirm sign up.');
+        const isRateLimit = error && (
+          error.message.toLowerCase().includes('rate limit') || 
+          error.message.toLowerCase().includes('email rate limit') ||
+          error.status === 429
+        );
+        if (isRateLimit) {
+          setMessage({
+            type: 'rate_limit',
+            title: 'Hourly Email Limit Reached',
+            body: 'Supabase email verification quota has been momentarily exceeded. Please try again in 1 hour.',
+            note: 'Your local progress & streak are safe on this device!'
+          });
+        } else if (error) {
+          setMessage({ type: 'error', text: error.message });
+        } else {
+          setMessage({ type: 'success', text: 'Account created! Please check your email to confirm sign up.' });
+        }
       }
     } catch (err) {
-      setMessage(err.message);
+      setMessage({ type: 'error', text: err.message });
     } finally {
       setLoading(false);
     }
@@ -142,9 +157,51 @@ export default function AuthModal({ isOpen, onClose, userSession, onSignOut }) {
               </div>
 
               {message && (
-                <div style={{ padding: '0.65rem', backgroundColor: '#FFF4E5', border: '1px solid #F5D0A9', color: 'var(--accent-maroon)', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '1rem', fontWeight: '600' }}>
-                  {message}
-                </div>
+                typeof message === 'object' && message.type === 'rate_limit' ? (
+                  <div style={{ 
+                    padding: '0.85rem 1rem', 
+                    backgroundColor: 'rgba(217, 119, 6, 0.08)', 
+                    border: '1px solid rgba(217, 119, 6, 0.25)', 
+                    borderRadius: '10px', 
+                    marginBottom: '1rem',
+                    color: '#92400e'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '700', fontSize: '0.85rem', marginBottom: '0.25rem' }}>
+                      <Clock size={16} color="#d97706" />
+                      <span>{message.title}</span>
+                    </div>
+                    <p style={{ fontSize: '0.8rem', margin: '0 0 0.5rem 0', opacity: 0.9, lineHeight: 1.4 }}>
+                      {message.body}
+                    </p>
+                    <div style={{ 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      gap: '0.35rem', 
+                      fontSize: '0.75rem', 
+                      fontWeight: '600',
+                      color: 'var(--accent-teal)',
+                      backgroundColor: 'rgba(13, 148, 136, 0.08)',
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '6px'
+                    }}>
+                      <ShieldCheck size={14} />
+                      <span>{message.note}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ 
+                    padding: '0.75rem 0.9rem', 
+                    backgroundColor: message?.type === 'success' ? 'rgba(16, 185, 129, 0.08)' : '#FFF4E5', 
+                    border: `1px solid ${message?.type === 'success' ? 'rgba(16, 185, 129, 0.25)' : '#F5D0A9'}`, 
+                    color: message?.type === 'success' ? '#065f46' : 'var(--accent-maroon)', 
+                    borderRadius: '8px', 
+                    fontSize: '0.85rem', 
+                    marginBottom: '1rem', 
+                    fontWeight: '600' 
+                  }}>
+                    {typeof message === 'object' ? message.text : message}
+                  </div>
+                )
               )}
 
               <div style={{ display: 'flex', gap: '0.75rem' }}>
