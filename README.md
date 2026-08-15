@@ -255,11 +255,6 @@ The project began as a personal problem and became an attempt to build something
 
 ---
 
-## License
-
-Add the project's license here.
-
-If the educational content is distributed separately from the source code, consider licensing the code and educational content separately.
 
 ---
 
