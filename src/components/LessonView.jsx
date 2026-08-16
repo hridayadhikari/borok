@@ -167,7 +167,7 @@ export default function LessonView({
                       <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '0.4rem' }}>
                           <button 
-                            onClick={() => onSpeak(targetWord)}
+                            onClick={() => onSpeak(targetWord, item.audioUrl)}
                             className="btn-secondary" 
                             style={{ padding: '0.3rem 0.6rem' }}
                             title="Listen"
@@ -225,7 +225,7 @@ export default function LessonView({
                     )}
                   </div>
                   <button 
-                    onClick={() => onSpeak(s.kokborok)}
+                    onClick={() => onSpeak(s.kokborok, s.audioUrl)}
                     className="btn-secondary"
                     style={{ padding: '0.3rem 0.6rem' }}
                   >
@@ -268,7 +268,7 @@ export default function LessonView({
                   </div>
                 </div>
                 <button 
-                  onClick={() => onSpeak(c.kokborok)}
+                  onClick={() => onSpeak(c.kokborok, c.audioUrl)}
                   className="btn-secondary" 
                   style={{ padding: '0.3rem 0.6rem' }}
                 >

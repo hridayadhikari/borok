@@ -93,9 +93,70 @@ export default function App() {
   });
 
   const [streak, setStreak] = useState(() => {
-    const saved = localStorage.getItem('kokborok_streak');
-    return saved ? parseInt(saved, 10) : 1;
+    const savedStreak = localStorage.getItem('kokborok_streak');
+    const lastActive = localStorage.getItem('kokborok_last_active_date');
+    const today = new Date().toLocaleDateString('en-CA');
+
+    if (!savedStreak || !lastActive) {
+      localStorage.setItem('kokborok_last_active_date', today);
+      localStorage.setItem('kokborok_streak', '1');
+      return 1;
+    }
+
+    const lastDate = new Date(`${lastActive}T00:00:00`);
+    const todayDate = new Date(`${today}T00:00:00`);
+    const diffDays = Math.round((todayDate - lastDate) / 86400000);
+
+    let currentStreak = parseInt(savedStreak, 10) || 1;
+
+    if (diffDays === 1) {
+      currentStreak += 1;
+      localStorage.setItem('kokborok_last_active_date', today);
+      localStorage.setItem('kokborok_streak', currentStreak.toString());
+    } else if (diffDays > 1) {
+      currentStreak = 1;
+      localStorage.setItem('kokborok_last_active_date', today);
+      localStorage.setItem('kokborok_streak', '1');
+    } else if (diffDays === 0) {
+      localStorage.setItem('kokborok_last_active_date', today);
+    }
+
+    return currentStreak;
   });
+
+  // Re-calculate streak when returning to tab/window
+  useEffect(() => {
+    const checkStreak = () => {
+      const savedStreak = localStorage.getItem('kokborok_streak');
+      const lastActive = localStorage.getItem('kokborok_last_active_date');
+      const today = new Date().toLocaleDateString('en-CA');
+      if (!savedStreak || !lastActive) return;
+
+      const lastDate = new Date(`${lastActive}T00:00:00`);
+      const todayDate = new Date(`${today}T00:00:00`);
+      const diffDays = Math.round((todayDate - lastDate) / 86400000);
+
+      let currentStreak = parseInt(savedStreak, 10) || 1;
+
+      if (diffDays === 1) {
+        currentStreak += 1;
+        localStorage.setItem('kokborok_last_active_date', today);
+        localStorage.setItem('kokborok_streak', currentStreak.toString());
+        setStreak(currentStreak);
+      } else if (diffDays > 1) {
+        localStorage.setItem('kokborok_last_active_date', today);
+        localStorage.setItem('kokborok_streak', '1');
+        setStreak(1);
+      }
+    };
+
+    window.addEventListener('focus', checkStreak);
+    document.addEventListener('visibilitychange', checkStreak);
+    return () => {
+      window.removeEventListener('focus', checkStreak);
+      document.removeEventListener('visibilitychange', checkStreak);
+    };
+  }, []);
 
   const [customDictData, setCustomDictData] = useState(() => {
     const saved = localStorage.getItem('kokborok_custom_dict');
@@ -143,19 +204,37 @@ export default function App() {
     localStorage.setItem('kokborok_audit_trail', JSON.stringify(auditTrail));
   }, [auditTrail]);
 
-  // Audio Speech Pronunciation Engine (Web Speech API)
-  const handleSpeak = (text) => {
-    if (!text) return;
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.85;
-      utterance.pitch = 1.0;
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(v => v.lang.includes('bn') || v.lang.includes('hi') || v.lang.includes('en-IN'));
-      if (preferredVoice) utterance.voice = preferredVoice;
-      window.speechSynthesis.speak(utterance);
+  // Audio Speech Pronunciation Engine (Supports Cloudinary MP3s & Web Speech API fallback)
+  const handleSpeak = (textOrObj, audioUrlParam) => {
+    let text = typeof textOrObj === 'string' ? textOrObj : (textOrObj?.text || textOrObj?.kokborok);
+    let url = audioUrlParam || (typeof textOrObj === 'object' ? textOrObj?.audioUrl : null);
+
+    const speakFallback = () => {
+      if (!text) return;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.85;
+        utterance.pitch = 1.0;
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.lang.includes('bn') || v.lang.includes('hi') || v.lang.includes('en-IN'));
+        if (preferredVoice) utterance.voice = preferredVoice;
+        window.speechSynthesis.speak(utterance);
+      }
+    };
+
+    if (url) {
+      const audio = new Audio(url);
+      audio.play().then(() => {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }).catch((err) => {
+        console.warn('Custom audio playback notice, trying fallback:', err);
+        speakFallback();
+      });
+      return;
     }
+
+    speakFallback();
   };
 
   // Toggle Lesson Completion
@@ -221,9 +300,12 @@ export default function App() {
       setCompletedLessons([1]);
       setBookmarks([]);
       setSrsData({});
+      setStreak(1);
       localStorage.removeItem('kokborok_completed_lessons');
       localStorage.removeItem('kokborok_bookmarks');
       localStorage.removeItem('kokborok_srs_data');
+      localStorage.setItem('kokborok_streak', '1');
+      localStorage.setItem('kokborok_last_active_date', new Date().toLocaleDateString('en-CA'));
     }
   };
 

@@ -115,7 +115,7 @@ export default function FlashcardDeck({ onSpeak, onBookmark, bookmarks = [], onR
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
-                  onSpeak(currentCard.kokborok);
+                  onSpeak(currentCard.kokborok, currentCard.audioUrl);
                 }}
                 className="btn-primary"
                 style={{ backgroundColor: 'var(--accent-forest-green)' }}

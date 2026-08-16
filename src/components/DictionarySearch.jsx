@@ -122,7 +122,7 @@ export default function DictionarySearch({ onSpeak, onBookmark, bookmarks = [], 
               {/* Action Buttons */}
               <div style={{ marginTop: '1rem', paddingTop: '0.5rem', borderTop: '1px dashed var(--border-hairline)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <button 
-                  onClick={() => onSpeak(word.kokborok)}
+                  onClick={() => onSpeak(word.kokborok, word.audioUrl)}
                   className="btn-secondary" 
                   style={{ padding: '0.3rem 0.65rem', fontSize: '0.8rem' }}
                 >
