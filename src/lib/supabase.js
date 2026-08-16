@@ -42,7 +42,7 @@ export const clearLocalSupabaseCredentials = () => {
   window.location.reload();
 };
 
-// Cloud Sync Helpers for Kokborok Learning Platform
+// Cloud Sync Helpers for Kokborok Learning Platform (Secured via Supabase RLS auth.uid())
 export const syncUserStreakToCloud = async (userId, streak) => {
   if (!supabase || !userId) return;
   try {
@@ -75,7 +75,7 @@ export const syncUserProgressToCloud = async (userId, completedLessons, srsData)
 export const syncBookmarksToCloud = async (userId, bookmarks) => {
   if (!supabase || !userId) return;
   try {
-    await supabase.from('user_bookmarks').delete().eq('user_id', userId);
+    await supabase.from('user_bookmarks').delete().match({ user_id: userId });
     if (bookmarks.length > 0) {
       const rows = bookmarks.map(b => ({
         user_id: userId,
@@ -91,13 +91,14 @@ export const syncBookmarksToCloud = async (userId, bookmarks) => {
 };
 
 // Fetch User Data from Supabase Cloud on Login / Initial Load
+// RLS automatically restricts select results to auth.uid() on Supabase server
 export const fetchUserDataFromCloud = async (userId) => {
   if (!supabase || !userId) return null;
   try {
     const [progressRes, streakRes, bookmarksRes] = await Promise.all([
-      supabase.from('user_progress').select('*').eq('user_id', userId).maybeSingle(),
-      supabase.from('user_streaks').select('*').eq('user_id', userId).maybeSingle(),
-      supabase.from('user_bookmarks').select('*').eq('user_id', userId)
+      supabase.from('user_progress').select('*').maybeSingle(),
+      supabase.from('user_streaks').select('*').maybeSingle(),
+      supabase.from('user_bookmarks').select('*')
     ]);
 
     if (progressRes.error) console.warn('user_progress cloud fetch error:', progressRes.error);
@@ -114,5 +115,6 @@ export const fetchUserDataFromCloud = async (userId) => {
     return null;
   }
 };
+
 
 
