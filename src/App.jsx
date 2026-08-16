@@ -204,7 +204,7 @@ export default function App() {
     localStorage.setItem('kokborok_audit_trail', JSON.stringify(auditTrail));
   }, [auditTrail]);
 
-  // Audio Speech Pronunciation Engine (Supports Cloudinary MP3s & Web Speech API fallback)
+  // Audio Speech Pronunciation Engine (Supports Cloudinary audio & Web Speech API fallback)
   const handleSpeak = (textOrObj, audioUrlParam) => {
     let text = typeof textOrObj === 'string' ? textOrObj : (textOrObj?.text || textOrObj?.kokborok);
     let url = audioUrlParam || (typeof textOrObj === 'object' ? textOrObj?.audioUrl : null);
@@ -224,13 +224,34 @@ export default function App() {
     };
 
     if (url) {
-      const audio = new Audio(url);
-      audio.play().then(() => {
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      }).catch((err) => {
-        console.warn('Custom audio playback notice, trying fallback:', err);
-        speakFallback();
-      });
+      // Clean up any double slashes or whitespace in URL
+      const cleanUrl = url.trim();
+      const audio = new Audio();
+      audio.crossOrigin = 'anonymous';
+      audio.src = cleanUrl;
+
+      let hasPlayed = false;
+
+      const attemptPlay = () => {
+        audio.play().then(() => {
+          hasPlayed = true;
+          if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        }).catch((err) => {
+          console.warn('CDN Audio playback error or autoplay block, using WebSpeech fallback:', err);
+          if (!hasPlayed) {
+            speakFallback();
+          }
+        });
+      };
+
+      audio.onerror = (e) => {
+        console.warn('CDN Audio source failed to load:', cleanUrl, e);
+        if (!hasPlayed) {
+          speakFallback();
+        }
+      };
+
+      attemptPlay();
       return;
     }
 
