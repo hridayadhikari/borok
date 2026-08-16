@@ -9,7 +9,7 @@ export const lessonsData = [
     items: [
       { kokborok: "Ang", english: "I", bengali: "আমি", type: "Pronoun" },
       { kokborok: "Chwng", english: "We", bengali: "আমরা", type: "Pronoun" },
-      { kokborok: "Nwng", english: "You", bengali: "তুমি", type: "Pronoun", audioUrl: "https://res.cloudinary.com/naqb7hm2/video/upload/v1786884022/nwng_mvf2co.aac" },
+      { kokborok: "Nwng", english: "You", bengali: "তুমি", type: "Pronoun", audioUrl: "https://res.cloudinary.com/naqb7hm2/video/upload/v1786895395/nwng_qb2hb2.mp3" },
       { kokborok: "Nohrok", english: "You all", bengali: "তোমরা সব", type: "Pronoun" },
       { kokborok: "Nini", english: "Your / Yours", bengali: "তোমার", type: "Possessive" },
       { kokborok: "Nohrokni", english: "Your all (possessive)", bengali: "তোমাদের", type: "Possessive" },

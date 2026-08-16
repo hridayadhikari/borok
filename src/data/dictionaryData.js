@@ -2,7 +2,7 @@ export const dictionaryData = [
   // Pronouns & Questions
   { id: "dict-1", kokborok: "Ang", english: "I", bengali: "আমি", category: "Pronouns", scriptBn: "আং" },
   { id: "dict-2", kokborok: "Chwng", english: "We", bengali: "আমরা", category: "Pronouns", scriptBn: "চুং" },
-  { id: "dict-3", kokborok: "Nwng", english: "You", bengali: "তুমি", category: "Pronouns", scriptBn: "নুং" , audioUrl: "https://res.cloudinary.com/naqb7hm2/video/upload/v1786884022/nwng_mvf2co.aac"},
+  { id: "dict-3", kokborok: "Nwng", english: "You", bengali: "তুমি", category: "Pronouns", scriptBn: "নুং" , audioUrl: "https://res.cloudinary.com/naqb7hm2/video/upload/v1786895395/nwng_qb2hb2.mp3"},
   { id: "dict-4", kokborok: "Nohrok", english: "You all", bengali: "তোমরা সব", category: "Pronouns", scriptBn: "নোহোরক" },
   { id: "dict-5", kokborok: "Bo", english: "He / She", bengali: "সে / তিনি", category: "Pronouns", scriptBn: "বো" },
   { id: "dict-6", kokborok: "Bohrok", english: "They", bengali: "তারা", category: "Pronouns", scriptBn: "বোহোরক" },
