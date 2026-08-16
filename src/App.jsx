@@ -22,7 +22,8 @@ import {
   getSupabaseClient, 
   syncUserStreakToCloud, 
   syncUserProgressToCloud, 
-  syncBookmarksToCloud 
+  syncBookmarksToCloud,
+  fetchUserDataFromCloud
 } from './lib/supabase';
 
 export default function App() {
@@ -60,16 +61,45 @@ export default function App() {
     };
   }, []);
 
-  // Check Supabase Auth Session
+  // Check Supabase Auth Session & Fetch Cloud State across Devices
   useEffect(() => {
     const client = getSupabaseClient();
     if (client) {
+      const loadUserCloudData = async (session) => {
+        if (!session?.user?.id) return;
+        const cloudData = await fetchUserDataFromCloud(session.user.id);
+        if (cloudData) {
+          if (cloudData.progress?.completed_lessons?.length > 0) {
+            setCompletedLessons(cloudData.progress.completed_lessons);
+          }
+          if (cloudData.progress?.srs_queue) {
+            setSrsData(cloudData.progress.srs_queue);
+          }
+          if (cloudData.streak?.current_streak) {
+            setStreak(cloudData.streak.current_streak);
+            if (cloudData.streak.last_activity_date) {
+              localStorage.setItem('kokborok_last_active_date', cloudData.streak.last_activity_date);
+            }
+          }
+          if (cloudData.bookmarks?.length > 0) {
+            const parsedBookmarks = cloudData.bookmarks.map(b => ({
+              kokborok: b.word_kokborok,
+              english: b.word_english,
+              bengali: b.word_bengali
+            }));
+            setBookmarks(parsedBookmarks);
+          }
+        }
+      };
+
       client.auth.getSession().then(({ data: { session } }) => {
         setUserSession(session);
+        if (session) loadUserCloudData(session);
       });
 
       const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
         setUserSession(session);
+        if (session) loadUserCloudData(session);
       });
 
       return () => subscription.unsubscribe();
@@ -95,7 +125,7 @@ export default function App() {
   const [streak, setStreak] = useState(() => {
     const savedStreak = localStorage.getItem('kokborok_streak');
     const lastActive = localStorage.getItem('kokborok_last_active_date');
-    const today = new Date().toLocaleDateString('en-CA');
+    const today = new Date().toISOString().split('T')[0];
 
     if (!savedStreak || !lastActive) {
       localStorage.setItem('kokborok_last_active_date', today);
@@ -103,8 +133,8 @@ export default function App() {
       return 1;
     }
 
-    const lastDate = new Date(`${lastActive}T00:00:00`);
-    const todayDate = new Date(`${today}T00:00:00`);
+    const lastDate = new Date(lastActive);
+    const todayDate = new Date(today);
     const diffDays = Math.round((todayDate - lastDate) / 86400000);
 
     let currentStreak = parseInt(savedStreak, 10) || 1;
@@ -124,16 +154,16 @@ export default function App() {
     return currentStreak;
   });
 
-  // Re-calculate streak when returning to tab/window
+  // Re-calculate streak on tab/window focus
   useEffect(() => {
     const checkStreak = () => {
       const savedStreak = localStorage.getItem('kokborok_streak');
       const lastActive = localStorage.getItem('kokborok_last_active_date');
-      const today = new Date().toLocaleDateString('en-CA');
+      const today = new Date().toISOString().split('T')[0];
       if (!savedStreak || !lastActive) return;
 
-      const lastDate = new Date(`${lastActive}T00:00:00`);
-      const todayDate = new Date(`${today}T00:00:00`);
+      const lastDate = new Date(lastActive);
+      const todayDate = new Date(today);
       const diffDays = Math.round((todayDate - lastDate) / 86400000);
 
       let currentStreak = parseInt(savedStreak, 10) || 1;
@@ -157,6 +187,7 @@ export default function App() {
       document.removeEventListener('visibilitychange', checkStreak);
     };
   }, []);
+
 
   const [customDictData, setCustomDictData] = useState(() => {
     const saved = localStorage.getItem('kokborok_custom_dict');

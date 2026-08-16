@@ -89,3 +89,25 @@ export const syncBookmarksToCloud = async (userId, bookmarks) => {
     console.warn('Supabase bookmarks sync notice:', err);
   }
 };
+
+// Fetch User Data from Supabase Cloud on Login / Initial Load
+export const fetchUserDataFromCloud = async (userId) => {
+  if (!supabase || !userId) return null;
+  try {
+    const [progressRes, streakRes, bookmarksRes] = await Promise.all([
+      supabase.from('user_progress').select('*').eq('user_id', userId).maybeSingle(),
+      supabase.from('user_streaks').select('*').eq('user_id', userId).maybeSingle(),
+      supabase.from('user_bookmarks').select('*').eq('user_id', userId)
+    ]);
+
+    return {
+      progress: progressRes.data || null,
+      streak: streakRes.data || null,
+      bookmarks: bookmarksRes.data || []
+    };
+  } catch (err) {
+    console.warn('Error fetching cloud user data:', err);
+    return null;
+  }
+};
+
