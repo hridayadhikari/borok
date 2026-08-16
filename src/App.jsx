@@ -61,6 +61,8 @@ export default function App() {
     };
   }, []);
 
+  const [isCloudLoaded, setIsCloudLoaded] = useState(false);
+
   // Check Supabase Auth Session & Fetch Cloud State across Devices
   useEffect(() => {
     const client = getSupabaseClient();
@@ -71,12 +73,15 @@ export default function App() {
         if (cloudData) {
           if (cloudData.progress?.completed_lessons?.length > 0) {
             setCompletedLessons(cloudData.progress.completed_lessons);
+            localStorage.setItem('kokborok_completed_lessons', JSON.stringify(cloudData.progress.completed_lessons));
           }
           if (cloudData.progress?.srs_queue) {
             setSrsData(cloudData.progress.srs_queue);
+            localStorage.setItem('kokborok_srs_data', JSON.stringify(cloudData.progress.srs_queue));
           }
           if (cloudData.streak?.current_streak) {
             setStreak(cloudData.streak.current_streak);
+            localStorage.setItem('kokborok_streak', cloudData.streak.current_streak.toString());
             if (cloudData.streak.last_activity_date) {
               localStorage.setItem('kokborok_last_active_date', cloudData.streak.last_activity_date);
             }
@@ -88,21 +93,33 @@ export default function App() {
               bengali: b.word_bengali
             }));
             setBookmarks(parsedBookmarks);
+            localStorage.setItem('kokborok_bookmarks', JSON.stringify(parsedBookmarks));
           }
         }
+        setIsCloudLoaded(true);
       };
 
       client.auth.getSession().then(({ data: { session } }) => {
         setUserSession(session);
-        if (session) loadUserCloudData(session);
+        if (session) {
+          loadUserCloudData(session);
+        } else {
+          setIsCloudLoaded(true);
+        }
       });
 
       const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
         setUserSession(session);
-        if (session) loadUserCloudData(session);
+        if (session) {
+          loadUserCloudData(session);
+        } else {
+          setIsCloudLoaded(true);
+        }
       });
 
       return () => subscription.unsubscribe();
+    } else {
+      setIsCloudLoaded(true);
     }
   }, []);
 
@@ -188,7 +205,6 @@ export default function App() {
     };
   }, []);
 
-
   const [customDictData, setCustomDictData] = useState(() => {
     const saved = localStorage.getItem('kokborok_custom_dict');
     return saved ? JSON.parse(saved) : dictionaryData;
@@ -201,20 +217,20 @@ export default function App() {
     ];
   });
 
-  // Sync state changes to LocalStorage & Supabase Cloud
+  // Sync state changes to LocalStorage & Supabase Cloud (Only after initial cloud load to prevent overwriting cloud data)
   useEffect(() => {
     localStorage.setItem('kokborok_completed_lessons', JSON.stringify(completedLessons));
-    if (userSession?.user?.id) {
+    if (userSession?.user?.id && isCloudLoaded) {
       syncUserProgressToCloud(userSession.user.id, completedLessons, srsData);
     }
-  }, [completedLessons, srsData, userSession]);
+  }, [completedLessons, srsData, userSession, isCloudLoaded]);
 
   useEffect(() => {
     localStorage.setItem('kokborok_bookmarks', JSON.stringify(bookmarks));
-    if (userSession?.user?.id) {
+    if (userSession?.user?.id && isCloudLoaded) {
       syncBookmarksToCloud(userSession.user.id, bookmarks);
     }
-  }, [bookmarks, userSession]);
+  }, [bookmarks, userSession, isCloudLoaded]);
 
   useEffect(() => {
     localStorage.setItem('kokborok_srs_data', JSON.stringify(srsData));
@@ -222,10 +238,11 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem('kokborok_streak', streak.toString());
-    if (userSession?.user?.id) {
+    if (userSession?.user?.id && isCloudLoaded) {
       syncUserStreakToCloud(userSession.user.id, streak);
     }
-  }, [streak, userSession]);
+  }, [streak, userSession, isCloudLoaded]);
+
 
   useEffect(() => {
     localStorage.setItem('kokborok_custom_dict', JSON.stringify(customDictData));

@@ -100,6 +100,10 @@ export const fetchUserDataFromCloud = async (userId) => {
       supabase.from('user_bookmarks').select('*').eq('user_id', userId)
     ]);
 
+    if (progressRes.error) console.warn('user_progress cloud fetch error:', progressRes.error);
+    if (streakRes.error) console.warn('user_streaks cloud fetch error:', streakRes.error);
+    if (bookmarksRes.error) console.warn('user_bookmarks cloud fetch error:', bookmarksRes.error);
+
     return {
       progress: progressRes.data || null,
       streak: streakRes.data || null,
@@ -110,4 +114,5 @@ export const fetchUserDataFromCloud = async (userId) => {
     return null;
   }
 };
+
 
