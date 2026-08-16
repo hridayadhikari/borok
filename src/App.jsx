@@ -272,25 +272,21 @@ export default function App() {
     };
 
     if (url) {
-      // Clean up any double slashes or whitespace in URL
       const cleanUrl = url.trim();
-      const audio = new Audio();
-      audio.crossOrigin = 'anonymous';
-      audio.src = cleanUrl;
+      const audio = new Audio(cleanUrl);
+      audio.preload = 'auto';
 
       let hasPlayed = false;
 
-      const attemptPlay = () => {
-        audio.play().then(() => {
-          hasPlayed = true;
-          if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-        }).catch((err) => {
-          console.warn('CDN Audio playback error or autoplay block, using WebSpeech fallback:', err);
-          if (!hasPlayed) {
-            speakFallback();
-          }
-        });
-      };
+      audio.play().then(() => {
+        hasPlayed = true;
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }).catch((err) => {
+        console.warn('CDN Audio playback error, switching to WebSpeech fallback:', err);
+        if (!hasPlayed) {
+          speakFallback();
+        }
+      });
 
       audio.onerror = (e) => {
         console.warn('CDN Audio source failed to load:', cleanUrl, e);
@@ -299,12 +295,12 @@ export default function App() {
         }
       };
 
-      attemptPlay();
       return;
     }
 
     speakFallback();
   };
+
 
   // Toggle Lesson Completion
   const handleToggleCompleteLesson = (lessonId) => {
