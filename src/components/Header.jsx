@@ -62,6 +62,7 @@ export default function Header({
             <button
               onClick={onOpenAuthModal}
               className="btn-secondary"
+              data-tour="auth-btn"
               style={{ 
                 padding: '0.3rem 0.75rem', 
                 fontSize: '0.8rem',
@@ -78,6 +79,7 @@ export default function Header({
             {/* Streak Badge */}
             <div 
               title="Daily Learning Streak"
+              data-tour="streak-badge"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -98,6 +100,7 @@ export default function Header({
             {/* Completion Badge */}
             <div 
               title="Lessons Completed"
+              data-tour="progress-badge"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -158,6 +161,7 @@ export default function Header({
                 key={nav.id}
                 onClick={() => setCurrentTab(nav.id)}
                 className={`chip-pill ${isActive ? 'active' : ''}`}
+                data-tour={`nav-${nav.id}`}
                 style={{ 
                   display: 'inline-flex', 
                   alignItems: 'center', 

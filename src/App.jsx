@@ -15,6 +15,8 @@ import ProgressDashboard from './components/ProgressDashboard';
 import AdminCMS from './components/AdminCMS';
 import AuthModal from './components/AuthModal';
 
+import { driver } from 'driver.js';
+
 import { lessonsData } from './data/lessonsData';
 import { dictionaryData } from './data/dictionaryData';
 import { 
@@ -381,6 +383,72 @@ export default function App() {
       setUserSession(null);
     }
   };
+
+  // Driver.js Guided Tour configuration
+  const startDriverTour = () => {
+    const driverObj = driver({
+      showProgress: true,
+      animate: true,
+      allowClose: true,
+      nextBtnText: 'Next →',
+      prevBtnText: '← Back',
+      doneBtnText: 'Get Started 🎉',
+      showButtons: ['next', 'previous', 'close'],
+      steps: [
+        {
+          popover: {
+            title: '👋 Khulumkha!',
+            description: 'Welcome to Borok — your interactive space to learn Kokborok language, culture, and dictionary.',
+            nextBtnText: 'Start Tour →'
+          }
+        },
+        {
+          element: '[data-tour="nav-learn"]',
+          popover: {
+            title: '📚 Structured Lessons',
+            description: 'Start your Kokborok journey through step-by-step interactive chapters.'
+          }
+        },
+        {
+          element: '[data-tour="nav-dictionary"]',
+          popover: {
+            title: '🔍 Kokborok Dictionary',
+            description: 'Search hundreds of words with Bengali script, phonetics, audio pronunciation, and examples.'
+          }
+        },
+        {
+          element: '[data-tour="nav-practice"]',
+          popover: {
+            title: '🎴 Flashcards & Quizzes',
+            description: 'Master Kokborok vocabulary through dynamic flashcards and interactive quizzes.'
+          }
+        },
+        {
+          element: '[data-tour="streak-badge"]',
+          popover: {
+            title: '🔥 Daily Learning Streak',
+            description: 'Keep your momentum going by practicing every day!'
+          }
+        },
+        {
+          element: '[data-tour="auth-btn"]',
+          popover: {
+            title: '☁️ Cloud Sync & Account',
+            description: 'Sync your learning progress and bookmarks across devices with Supabase authentication.'
+          }
+        }
+      ]
+    });
+    driverObj.drive();
+  };
+
+  // Show initial tour modal to everyone on page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      startDriverTour();
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

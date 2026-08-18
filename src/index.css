@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Work+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import 'driver.js/dist/driver.css';
 
 :root {
   /* Color Palette - Tripuri Handwoven Risa/Rignai Textile Tones */
@@ -393,4 +394,109 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     font-size: 0.7rem;
     letter-spacing: 0.08em;
   }
+}
+
+/* ==========================================================================
+   Driver.js Custom Popover Theme (Tripuri Rignai / Borok Palette)
+   ========================================================================== */
+.driver-popover {
+  background-color: var(--surface-card) !important;
+  color: var(--text-ink) !important;
+  border: 1px solid var(--border-hairline) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: 0 12px 35px rgba(43, 33, 25, 0.18) !important;
+  font-family: var(--font-body) !important;
+  padding: 1.25rem !important;
+  max-width: 340px !important;
+}
+
+.driver-popover-title {
+  font-family: var(--font-heading) !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  color: var(--accent-deep-maroon) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.driver-popover-description {
+  font-size: 0.9rem !important;
+  color: #4A3E34 !important;
+  line-height: 1.5 !important;
+}
+
+.driver-popover-footer {
+  margin-top: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+}
+
+.driver-popover-progress-text {
+  font-size: 0.78rem !important;
+  color: var(--accent-ochre) !important;
+  font-weight: 600 !important;
+}
+
+.driver-popover-prev-btn {
+  background-color: var(--surface-cream) !important;
+  color: var(--text-ink) !important;
+  border: 1px solid var(--border-hairline) !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.driver-popover-prev-btn:disabled,
+.driver-popover-prev-btn.driver-popover-btn-disabled,
+.driver-popover-footer .driver-popover-prev-btn[disabled] {
+  display: none !important;
+}
+
+.driver-popover-prev-btn:hover {
+  background-color: var(--border-hairline) !important;
+}
+
+.driver-popover-next-btn {
+  background-color: var(--accent-maroon) !important;
+  color: #FFFDF8 !important;
+  border: 1px solid var(--accent-maroon) !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 0.35rem 0.95rem !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.driver-popover-next-btn:hover {
+  background-color: var(--accent-deep-maroon) !important;
+}
+
+.driver-popover-close-btn {
+  color: var(--accent-maroon) !important;
+  font-size: 1.25rem !important;
+  opacity: 0.75 !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.driver-popover-close-btn:hover {
+  color: var(--accent-deep-maroon) !important;
+  opacity: 1 !important;
+}
+
+.driver-popover-arrow-side-left.driver-popover-arrow {
+  border-right-color: var(--surface-card) !important;
+}
+.driver-popover-arrow-side-right.driver-popover-arrow {
+  border-left-color: var(--surface-card) !important;
+}
+.driver-popover-arrow-side-top.driver-popover-arrow {
+  border-bottom-color: var(--surface-card) !important;
+}
+.driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-top-color: var(--surface-card) !important;
 }
